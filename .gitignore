@@ -65,5 +65,3 @@ dist/**/*
 
 # ignore yarn.lock
 yarn.lock
-
-nodemon.json

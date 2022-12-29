@@ -18,12 +18,17 @@ mongoose.set("strictQuery", true);
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
-app.use("/api/", initializeApiRoutes());
+// app.use("/api/", initializeApiRoutes());
 
-mongoose.connect(config.get("MONGO.url"), (connection) => {
-  console.log("Database error: ", connection);
-  console.log("Database connected.");
-  app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
-  });
+
+
+ mongoose.connect("mongodb+srv://nodeexpressserver:R0Nx9MrP1FPpW41d@development.prvxkuh.mongodb.net/?retryWrites=true&w=majority",  (error) => {
+  if(error){
+    console.log("Database error: ", error);
+  } else {
+    console.log("Database connected.");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port: ${PORT}`);
+    });
+  }
 });

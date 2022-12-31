@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
+import cors from "cors";
 import initializeApiRoutes from "./api/routes";
 import config from "config";
 // import { v2 as cloudinary } from "cloudinary";
@@ -18,15 +19,14 @@ mongoose.set("strictQuery", true);
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
-// app.use("/api/", initializeApiRoutes());
+app.use(cors());
 
-
-
- mongoose.connect("mongodb+srv://nodeexpressserver:R0Nx9MrP1FPpW41d@development.prvxkuh.mongodb.net/?retryWrites=true&w=majority",  (error) => {
-  if(error){
+mongoose.connect(config.get("MONGO.url"), (error) => {
+  if (error) {
     console.log("Database error: ", error);
   } else {
     console.log("Database connected.");
+    app.use("/api/", initializeApiRoutes());
     app.listen(PORT, () => {
       console.log(`Server is running on port: ${PORT}`);
     });

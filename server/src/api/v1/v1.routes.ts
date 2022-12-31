@@ -3,7 +3,7 @@ import { Request, Response, Router, NextFunction } from "express";
 import { UserController } from "./controllers/user.controller";
 
 const v1Routes = () => {
-  console.log("V1");
+  console.log("~ V1 routes started.");
   const router = Router();
 
   router.use(
@@ -21,6 +21,7 @@ const v1Routes = () => {
 
   router.use("/users", UserController());
 
+  console.log("|_V1 routes finished ✔");
   return router;
 };
 

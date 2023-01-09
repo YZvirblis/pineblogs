@@ -4,10 +4,11 @@ import axios from "axios";
 function LoginModal() {
   const [isRegister, setIsRegister] = useState(true);
   const [renderContent, setRenderContent] = useState();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     isRegister ? renderRegisterModal() : renderLoginModal();
-  }, [isRegister]);
+  }, [isRegister, message]);
 
   const renderRegisterModal = () => {
     const contentToRender = (
@@ -59,12 +60,16 @@ function LoginModal() {
           <span className="text-sm text-gray-500">
             Already have an account?{" "}
             <span
-              onClick={() => setIsRegister(false)}
+              onClick={() => {
+                setIsRegister(false);
+                setMessage("");
+              }}
               className="text-blue-500 underline cursor-pointer"
             >
               Log In
             </span>
           </span>
+          {message ? <span className="text-red-500">{message}</span> : null}
         </div>
       </form>
     );
@@ -99,12 +104,16 @@ function LoginModal() {
           <span className="text-sm text-gray-500">
             Don't have an account?{" "}
             <span
-              onClick={() => setIsRegister(true)}
+              onClick={() => {
+                setIsRegister(true);
+                setMessage("");
+              }}
               className="text-blue-500 underline cursor-pointer"
             >
               Register
             </span>
           </span>
+          {message ? <span className="text-red-500">{message}</span> : null}
         </div>
       </form>
     );
@@ -122,13 +131,31 @@ function LoginModal() {
     e.preventDefault();
     if (isRegister) {
       if (password.value === retypepass.value) {
-        console.log("sending request...");
-        const res = await axios.post("v1/users/register", {
-          username: username.value,
+        try {
+          const res = await axios.post("v1/users/register", {
+            username: username.value,
+            email: email.value,
+            password: password.value,
+          });
+          console.log(res.data);
+          setMessage("");
+          setIsRegister(false);
+        } catch (err: any) {
+          setMessage(err.response.data);
+        }
+      } else {
+        setMessage("Passwords do not match");
+      }
+    } else {
+      try {
+        const res = await axios.post("v1/users/login", {
           email: email.value,
           password: password.value,
         });
-        console.log(res.data);
+        localStorage.setItem("token", res.data);
+        setMessage("");
+      } catch (err: any) {
+        setMessage(err.response.data);
       }
     }
   };

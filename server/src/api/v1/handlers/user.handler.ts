@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import IUser from "../interfaces/user.interface";
 import { ParsedQs } from "qs";
 import jwt from "jsonwebtoken";
+import config from "config";
 
 const getUserHandler = async (
   id?: string | ParsedQs | string[] | ParsedQs[] | undefined,
@@ -38,9 +39,9 @@ const registerUserHandler = async (
 
     // SAVE USER TO DB
     await newUser.save();
-    //@ts-ignore
-    const { password, ...rest } = newUser._doc;
-    return { message: rest, status: 201 };
+    // //@ts-ignore
+    // const { password, ...rest } = newUser._doc;
+    return { message: "User registered successfully", status: 201 };
   } catch (err: any) {
     if (err.code === 11000) {
       return {

@@ -1,10 +1,13 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function LoginModal() {
   const [isRegister, setIsRegister] = useState(true);
   const [renderContent, setRenderContent] = useState();
   const [message, setMessage] = useState("");
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     isRegister ? renderRegisterModal() : renderLoginModal();
@@ -121,30 +124,30 @@ function LoginModal() {
     setRenderContent(contentToRender);
   };
 
-  const labelStyle =
-    "flex flex-col text-left justify-center items-left w-full my-2";
-  const inputStyle = "rounded w-full p-1 m-1";
-
   const submitForm = async (e: FormEvent) => {
     //@ts-ignore
     const { username, email, password, retypepass } = e.target;
     e.preventDefault();
     if (isRegister) {
-      if (password.value === retypepass.value) {
-        try {
-          const res = await axios.post("v1/users/register", {
-            username: username.value,
-            email: email.value,
-            password: password.value,
-          });
-          console.log(res.data);
-          setMessage("");
-          setIsRegister(false);
-        } catch (err: any) {
-          setMessage(err.response.data);
+      if(password.value.length < 8){
+        setMessage("Password must be longer than 8 charactes.")
+      }else{
+        if (password.value === retypepass.value) {
+          try {
+            const res = await axios.post("v1/users/register", {
+              username: username.value,
+              email: email.value,
+              password: password.value,
+            });
+            console.log(res.data);
+            setMessage("");
+            setIsRegister(false);
+          } catch (err: any) {
+            setMessage(err.response.data);
+          }
+        } else {
+          setMessage("Passwords do not match");
         }
-      } else {
-        setMessage("Passwords do not match");
       }
     } else {
       try {
@@ -154,11 +157,17 @@ function LoginModal() {
         });
         localStorage.setItem("token", res.data);
         setMessage("");
+        navigate("/")
       } catch (err: any) {
         setMessage(err.response.data);
       }
     }
   };
+
+  const labelStyle =
+  "flex flex-col text-left justify-center items-left w-full my-2";
+const inputStyle = "rounded w-full p-1 m-1";
+
   return (
     <div className="md:w-1/2 w-full rounded flex align-center justify-center items-center text-center flex-col p-3 md:m-3">
       {renderContent}

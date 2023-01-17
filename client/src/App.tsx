@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import Home from "./components/Home";
-import RequireAuth from "./components/RequireAuth";
-import PersistLogin from "./components/PersistLogin";
+import Layout from "./components/outlets/Layout";
+import Home from "./pages/Home";
+import RequireAuth from "./components/outlets/RequireAuth";
+import PersistLogin from "./components/outlets/PersistLogin";
 
 
 function App() {

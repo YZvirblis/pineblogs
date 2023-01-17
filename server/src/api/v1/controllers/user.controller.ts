@@ -17,7 +17,7 @@ const UserController = () => {
   const router = Router();
   router.post("/register", registerUser);
   router.post("/login", loginUser);
-  router.get("logout", logoutUser)
+  router.get("/logout", logoutUser)
   router.get("/refresh", refreshUser);
   router.get("/allusers", authenticateToken,getAllUsers);
   router.get("/:id", authenticateToken, getUser);
@@ -82,9 +82,8 @@ const refreshUser = async (
   next: NextFunction
   ) => {
     const cookies = request.cookies
-    console.log("GOT TO REFRESH CONTROLLER")
     const res: any = await refreshUserHandler(cookies);
-    response.cookie('jwt', res.message.refreshToken, {httpOnly:true, maxAge: 24 * 60 * 60 * 1000})
+    res.message.refreshToken && response.cookie('jwt', res.message.refreshToken, {httpOnly:true, maxAge: 24 * 60 * 60 * 1000})
     response.status(res.status).json({token: res.message.accessToken, user: res.message.user});
   };
   
@@ -96,6 +95,7 @@ const refreshUser = async (
   ) => {
     const cookies = request.cookies
     const res: any = await logoutUserHandler(cookies);
+    console.log(res.message)
     response.clearCookie('jwt', {httpOnly:true})
     response.status(res.status).json({token: res.message.accessToken, user: res.message.user});
   };

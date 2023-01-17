@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./components/Home";
 import RequireAuth from "./components/RequireAuth";
+import PersistLogin from "./components/PersistLogin";
 
 
 function App() {
@@ -17,8 +18,10 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
         {/* PROTECTED ROUTES */}
-        <Route path="/" element={<RequireAuth/>}>
-          <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<PersistLogin/>}>
+          <Route path="/" element={<RequireAuth/>}>
+            <Route path="/" element={<Home/>}/>
+          </Route>
         </Route>
       </Route>
     </Routes>

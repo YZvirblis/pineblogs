@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import axios from "../api/axios"
 import { useNavigate, useLocation } from 'react-router-dom'
+import SignOut from './SignOut'
 
 const Users = () => {
     const [users, setUsers] = useState<any>()
@@ -35,6 +36,7 @@ const Users = () => {
                                 <li key={i} >{user?.username}</li>
                                 )
                         })}
+                    <SignOut/>
                     </ul>
                 ) : <p>No users to display</p>
         }

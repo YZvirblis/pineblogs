@@ -66,4 +66,5 @@ dist/**/*
 # ignore yarn.lock
 yarn.lock
 
-config
+default.js
+production.js

@@ -6,20 +6,9 @@ const v1Routes = () => {
   console.log("~ V1 routes started.");
   const router = Router();
 
-  router.use(
-    "/ping",
-    (
-      request: Request,
-      response: Response,
-      next: NextFunction,
-      pickFields: any = null
-    ) => {
-      console.log("Pong");
-      response.send("Pong");
-    }
-  );
+  router.use('/ping/', (req,res) => {res.send("Pong")})
 
-  router.use("/users", UserController());
+  router.use("/users/", UserController());
 
   console.log("|_V1 routes finished ✔");
   return router;

@@ -8,7 +8,7 @@ import {
   getPostsHandler,
   getUserPostsHandler,
 } from "../handlers/post.handler";
-import authenticateToken from "../middlewares/middlware.auth";
+import authenticateToken from "../middlewares/middleware.auth";
 
 const PostController = () => {
   const router = Router();

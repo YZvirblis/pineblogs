@@ -13,6 +13,7 @@ interface IUser {
   description: string;
   location: string;
   relationship: number;
+  refreshToken?:string;
   _id: any;
 }
 

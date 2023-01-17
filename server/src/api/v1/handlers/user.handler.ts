@@ -20,6 +20,16 @@ const getUserHandler = async (
   }
 };
 
+const getAllUsersHandler = async (
+) => {
+  try {
+    const users: any = await User.find();
+    return { message: users, status: 200 };
+  } catch (err: any) {
+    return { message: err.message, status: 500 };
+  }
+};
+
 const registerUserHandler = async (
   username: string,
   email: string,
@@ -58,23 +68,73 @@ const loginUserHandler = async (email: string, password: string) => {
   try {
     const user: IUser | null = await User.findOne({ email });
     if (!user) {
-      return { message: "User not found", status: 404 };
+      return { message: "User not found", status: 401 };
     } else {
       const validPassword = bcrypt.compare(password, user.password);
       if (!validPassword) {
-        return { message: "Password is incorrect", status: 400 };
+        return { message: "Password is incorrect", status: 401 };
       } else {
         //@ts-ignore
-        const accessToken = jwt.sign(user._doc, config.get("JWT.secret"));
+        const { password, refreshToken ,...rest } = user._doc;
         //@ts-ignore
-        // const { password, ...rest } = user._doc;
-        return { message: accessToken, status: 200 };
+        const accessToken = jwt.sign(rest, config.get("JWT.secret"), {expiresIn: '15m'});
+        const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {expiresIn: '1d'});
+        //@ts-ignore
+        const updatedUser: IUser = {...user._doc, refreshToken: newRefreshToken}
+        await User.findByIdAndUpdate(user?._id, {$set: updatedUser});
+        return { message: {user: {...rest} , accessToken, refreshToken: newRefreshToken}, status: 200 };
       }
     }
   } catch (err) {
-    console.log(err);
+    console.log(`LOGIN ERROR: ${err}`);
   }
 };
+
+const refreshUserHandler = async (cookies: any) => {
+  const refreshToken = cookies.jwt
+  try {
+    const user: IUser | null = await User.findOne({ refreshToken });
+    if (!user) {
+      return { message: "User not found", status: 403 };
+    } else {
+      return jwt.verify(refreshToken, config.get("JWT.refresh"), async (err: any, decodedUser: any) => {
+        //@ts-ignore
+        if(err || user._doc._id != decodedUser._id) {return {message: "Forbidden", status: 403}}
+        //@ts-ignore
+        const { password, refreshToken, ...rest } = user._doc;
+        //@ts-ignore
+        const accessToken = jwt.sign(rest, config.get("JWT.secret"), {expiresIn: '15m'});
+        const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {expiresIn: '1d'});
+        //@ts-ignore
+        const updatedUser: IUser = {...user._doc, refreshToken: newRefreshToken}
+        await User.findByIdAndUpdate(user?._id, {$set: updatedUser});
+        return { message: {user: {...rest} , accessToken, refreshToken: newRefreshToken}, status: 200 };
+      })
+  } 
+}
+  catch (err) {
+    console.log(`REFRESH ERROR: ${err}`);
+  }
+}
+
+const logoutUserHandler = async (cookies: any) => {
+  const refreshToken = cookies.jwt
+  try {
+    const user: IUser | null = await User.findOne({ refreshToken });
+    if (!user) {
+      return { message: "User not found", status: 403 };
+    } else {
+        //@ts-ignore
+        const updatedUser: IUser = {...user._doc, refreshToken: ""}
+        await User.findByIdAndUpdate(user?._id, {$set: updatedUser});
+        return { message: "Logged out successfully", status: 200 };
+      
+  } 
+}
+  catch (err) {
+    console.log(err);
+  }
+}
 
 const updateUserHandler = async (paramID: string, user: IUser) => {
   if (user._id === paramID || user.isAdmin) {
@@ -163,4 +223,7 @@ export {
   deleteUserHandler,
   followUserHandler,
   unfollowUserHandler,
+  refreshUserHandler,
+  logoutUserHandler,
+  getAllUsersHandler
 };

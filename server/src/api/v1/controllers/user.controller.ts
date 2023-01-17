@@ -7,14 +7,20 @@ import {
   deleteUserHandler,
   followUserHandler,
   unfollowUserHandler,
+  refreshUserHandler,
+  logoutUserHandler,
+  getAllUsersHandler
 } from "../handlers/user.handler";
-import authenticateToken from "../middlewares/middlware.auth";
+import authenticateToken from "../middlewares/middleware.auth";
 
 const UserController = () => {
   const router = Router();
-  router.get("/:id", authenticateToken, getUser);
   router.post("/register", registerUser);
   router.post("/login", loginUser);
+  router.get("logout", logoutUser)
+  router.get("/refresh", refreshUser);
+  router.get("/allusers", authenticateToken,getAllUsers);
+  router.get("/:id", authenticateToken, getUser);
   router.put("/update/:id", authenticateToken, updateUser);
   router.delete("/delete/:id", authenticateToken, deleteUser);
   router.put("/follow/:id", authenticateToken, followUser);
@@ -32,6 +38,16 @@ const getUser = async (
   const userID = request.params.id;
   const username = request.query.username;
   const res: any = await getUserHandler(userID, username);
+  response.status(res.status).json(res.message);
+};
+
+// GET ALL USERS
+const getAllUsers = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const res: any = await getAllUsersHandler();
   response.status(res.status).json(res.message);
 };
 
@@ -55,11 +71,36 @@ const loginUser = async (
 ) => {
   const { email, password } = request.body;
   const res: any = await loginUserHandler(email, password);
-
-  response.status(res.status).json(res.message);
+  response.cookie('jwt', res.message.refreshToken, {httpOnly:true, maxAge: 24 * 60 * 60 * 1000})
+  response.status(res.status).json({token: res.message.accessToken, user: res.message.user});
 };
 
-// UPDATE CONTROLLER
+// REFRESH CONTROLLER
+const refreshUser = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+  ) => {
+    const cookies = request.cookies
+    console.log("GOT TO REFRESH CONTROLLER")
+    const res: any = await refreshUserHandler(cookies);
+    response.cookie('jwt', res.message.refreshToken, {httpOnly:true, maxAge: 24 * 60 * 60 * 1000})
+    response.status(res.status).json({token: res.message.accessToken, user: res.message.user});
+  };
+  
+  // LOGOUT CONTROLLER
+  const logoutUser = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    const cookies = request.cookies
+    const res: any = await logoutUserHandler(cookies);
+    response.clearCookie('jwt', {httpOnly:true})
+    response.status(res.status).json({token: res.message.accessToken, user: res.message.user});
+  };
+
+  // UPDATE CONTROLLER
 const updateUser = async (
   request: Request,
   response: Response,

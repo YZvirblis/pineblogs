@@ -65,6 +65,9 @@ const userSchema = new mongoose.Schema<IUser>(
       max: 50,
       default: "",
     },
+    refreshToken:{
+      type:String,
+    }
   },
   { timestamps: true }
 );

@@ -48,7 +48,7 @@ const InfoContainer = styled.div`
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `
 const Username = styled.h1`
-    font-size: 5vw;
+    font-size: 2vw;
     letter-spacing: 0.2rem;
     color: black;
 `
@@ -79,12 +79,15 @@ justify-content: center;
 `
 
 const AboutContainer = styled.div`
-padding: 1vw;
+    padding: 1vw;
     border-radius: 25px;
     font-weight: bold;
+    width: 100%;
+    height: 100%;
 `
 const About = styled.p`
     font-size: x-large;
+    word-wrap: break-word;
 `
 
 const Icon = styled.h3`
@@ -104,7 +107,37 @@ const Icon = styled.h3`
     }
 `
 
+const UsernameInput = styled.input`
+    border: solid 1px gray;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2vw;
+    letter-spacing: 0.2rem;
+    color: black;
+    margin-bottom: 5px;
+    width: 100%;
+`
+
+const NameInput = styled.input`
+    width: 75%;
+    margin: 0 2px 0 2px;
+    border: solid 1px gray;
+    border-radius: 10px;
+    text-align: center;
+    color: black;
+`
+
+const AboutInput = styled.textarea`
+    border: solid 1px gray;
+    border-radius: 10px;
+    color: black;
+    font-size: x-large;
+    width: 100%;
+    height: 100%;
+
+`
 
 
 
-export {MainContainer, ErrorMessage, ProfileContainer, ProfilePicture, Username, DetailsContainer, FullNameContainer, LocationContainer, About, AboutContainer, InfoContainer, Icon}
+
+export {MainContainer, ErrorMessage, ProfileContainer, ProfilePicture, Username, DetailsContainer, FullNameContainer, LocationContainer, About, AboutContainer, InfoContainer, Icon, UsernameInput, NameInput, AboutInput}

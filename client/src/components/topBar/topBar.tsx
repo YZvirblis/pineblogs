@@ -16,7 +16,7 @@ const TopBar = () => {
 
   useEffect(() => {
     console.log(auth)
-  }, [])
+  }, [auth])
   
 
   const renderLoggedOut = () => {

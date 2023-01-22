@@ -74,10 +74,10 @@ const Login = () => {
 
     return (
         <loginStyle.PageContainer className='loginBackground'>
-            <loginStyle.RedirectContainer onClick={() => navigate("/register")}>
+            {/* <loginStyle.RedirectContainer onClick={() => navigate("/register")}>
                 <h3>Don't have an account?</h3>
                 <p className='text-amber-600 cursor-pointer font-bold text-xl'>Register</p>
-            </loginStyle.RedirectContainer>
+            </loginStyle.RedirectContainer> */}
         <loginStyle.MainContainer>
             <loginStyle.TitleText>Welcome</loginStyle.TitleText>
             <loginStyle.InputContainer>

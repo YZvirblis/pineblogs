@@ -7,7 +7,6 @@ interface props {
     children: ReactNode
 }
 const SocialMediaIcon = ({color, children} : props) => {
-    console.log(color)
   return (
     //@ts-ignore
     <StyledIcon backgroundColor={color}>{children}</StyledIcon>

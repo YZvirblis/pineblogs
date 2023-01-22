@@ -1,5 +1,5 @@
-import { faPersonMilitaryToPerson } from "@fortawesome/free-solid-svg-icons"
 import styled from "styled-components"
+import backgrounds from "../resources/backgrounds"
 
 const MainContainer = styled.div`
     display: flex;
@@ -7,10 +7,10 @@ const MainContainer = styled.div`
     flex-direction: column;
     height: 80vh;
     width: 30vw;
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px 0 rgba(31,38,135, 0.37);
-    backdrop-filter: blur(8.5px);
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.15);
+    /* box-shadow: 0 8px 32px 0 rgba(31,38,135, 0.37); */
+    backdrop-filter: blur(7.5px);
+    border-radius: 0 0 10px 10px;
 
     @media only screen and (max-width: 320px) {
         width: 100vw;
@@ -95,15 +95,17 @@ const ButtonContainer = styled.div`
 `
 
 const StyledButton = styled.button`
-    background: linear-gradient(to right, #14163c 0%, #03217b 79%);
+    background: ${props => props.disabled ? "grey" : "linear-gradient(to right, #14163c 0%, #03217b 79%)"};
     text-transform: uppercase;
     letter-spacing: 0.2rem;
-    width: 65%;
+    width: 75%;
     height: 3rem;
     border: none;
     color: white;
     border-radius: 2rem;
+    font-size: 1vw;
     cursor: pointer;
+    transition: 300ms;
 `
 
 const LoginWith = styled.h5`
@@ -136,7 +138,8 @@ const PageContainer = styled.div`
     height: 100vh;
     width: 100vw;
     background-size: cover;
-    background: radial-gradient(circle, rgba(219,181,66,1) 0%, rgba(136,217,58,1) 35%, rgba(90,185,131,1) 100%);;
+    background-image: url(${backgrounds[Math.floor(Math.random() * 7)]});
+    /* background: radial-gradient(circle, rgba(219,181,66,1) 0%, rgba(136,217,58,1) 35%, rgba(90,185,131,1) 100%); */
     display: flex;
     justify-content: center;
     align-items: center;

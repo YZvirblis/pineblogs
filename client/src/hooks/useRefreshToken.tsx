@@ -9,8 +9,8 @@ const useRefreshToken = () => {
             withCredentials: true
         })
         setAuth((prev: any) => {
-            console.log(`PREVIOUS: ${JSON.stringify(prev)}`)
-            console.log(`NOW: ${JSON.stringify({...prev, token: res.data.token, user:res.data.user})}`)
+            // console.log(`PREVIOUS: ${JSON.stringify(prev)}`)
+            // console.log(`NOW: ${JSON.stringify({...prev, token: res.data.token, user:res.data.user})}`)
             return {...prev, token: res.data.token, user:res.data.user}
         })
         return res.data.token

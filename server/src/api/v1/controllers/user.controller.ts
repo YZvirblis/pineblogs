@@ -20,7 +20,7 @@ const UserController = () => {
   router.get("/logout", logoutUser)
   router.get("/refresh", refreshUser);
   router.get("/allusers", authenticateToken,getAllUsers);
-  router.get("/:id", authenticateToken, getUser);
+  router.get("/getuser/:id", authenticateToken, getUser);
   router.put("/update/:id", authenticateToken, updateUser);
   router.delete("/delete/:id", authenticateToken, deleteUser);
   router.put("/follow/:id", authenticateToken, followUser);
@@ -95,7 +95,6 @@ const refreshUser = async (
   ) => {
     const cookies = request.cookies
     const res: any = await logoutUserHandler(cookies);
-    console.log(res.message)
     response.clearCookie('jwt', {httpOnly:true})
     response.status(res.status).json({token: res.message.accessToken, user: res.message.user});
   };

@@ -95,12 +95,19 @@ const getPostsHandler = async (userID: string) => {
     const currentUser = await User.findById(userID);
     const userPosts: IPost[] = await Post.find({ userID: currentUser?._id });
     //@ts-ignore
-    const followingPosts: IPost[] = await Promise.all(
+    const followingPosts: IPost[] = 
       //@ts-ignore
-      currentUser?.following?.map((followID) => {
+      await currentUser?.following?.map((followID) => {
         return Post.find({ userID: followID });
       })
-    );
+    // const followingPosts: IPost[] = await Promise.all(
+    //   //@ts-ignore
+    //   currentUser?.following?.map((followID) => {
+    //     return Post.find({ userID: followID });
+    //   })
+    //   );
+      console.log(`following: ${followingPosts}`)
+      console.log(`Returning: ${userPosts.concat(...followingPosts)}`)
     return { message: userPosts.concat(...followingPosts), status: 200 };
   } catch (err) {
     console.log(err);

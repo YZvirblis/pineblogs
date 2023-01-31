@@ -1,7 +1,8 @@
 import styled from "styled-components"
 
 const MainContainer = styled.div`
-    width: 100%;
+margin: 0;
+    width: 100vw;
     height: 10vh;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(9.5px);
@@ -18,11 +19,12 @@ const MainContainer = styled.div`
 `
 
 const ItemContatiner = styled.div`
-    width: 10vw;
+    width: 30%;
     align-items: center;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: ${props => props.align};
+    margin: 0 10px 0 10px;
 `
 const logo = styled.img`
 width: 35px;
@@ -45,8 +47,7 @@ const profileContainer = styled.div`
     align-items: center;
     text-align: center;
     border: 2px solid green;
-    padding: .5vh 2vw .5vh 2vw;
-    margin-left: 2vw;
+    padding: .5vh 1vw .5vh 1vw;
     border-radius: 5px;
     cursor: pointer;
 `
@@ -61,7 +62,24 @@ const profileImage = styled.img`
 
 const username = styled.span`
     text-decoration: underline;
-    font-size: 1.5vw;
+    font-size: 1vw;
 `
 
-export {MainContainer, ItemContatiner, logo, title, profileContainer, profileImage, username}
+const Icon = styled.h3`
+    height: 2rem;
+    width: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4rem;
+    color: gray;
+    background: ${props => props.withBg ? "lightgray" : ""};
+    cursor: ${props => props.pointer ? "pointer" : "default"};
+    svg{
+        width: 1rem;
+        height: 1rem;
+
+    }
+`
+
+export {MainContainer, ItemContatiner, logo, title, profileContainer, profileImage, username, Icon}

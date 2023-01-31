@@ -24,6 +24,10 @@ const postSchema = new mongoose.Schema<IPost>(
       type: Array,
       default: [],
     },
+    tags: {
+      type: Array,
+      default: []
+    }
   },
   { timestamps: true }
 );

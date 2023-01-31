@@ -21,6 +21,7 @@ const StyledIcon = styled.h3`
     align-items: center;
     border-radius: 4rem;
     color: white;
+    margin: 1vw;
     cursor: pointer;
     background: ${(props) => {
         //@ts-ignore

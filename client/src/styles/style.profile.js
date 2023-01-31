@@ -27,14 +27,19 @@ justify-content: center;
 padding: 2vw;
 cursor:default
 `
-const ProfilePicture = styled.img`
+const ProfilePictureContainer = styled.div`
     width: 50%;
     height: 100%;
     border-radius: 25px;
     border: solid 1px black;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+`
+const ProfilePicture = styled.img`
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
     background-image: url(${props => props.img ? props.img : require("../resources/pictures/profile.jpg")});
     background-size: cover;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `
 const InfoContainer = styled.div`
     display: flex;
@@ -99,7 +104,7 @@ const Icon = styled.h3`
     border-radius: 4rem;
     color: gray;
     background: ${props => props.withBg ? "lightgray" : ""};
-    cursor: pointer;
+    cursor: ${props => props.pointer ? "pointer" : "default"};
     svg{
         width: 1rem;
         height: 1rem;
@@ -134,10 +139,9 @@ const AboutInput = styled.textarea`
     font-size: x-large;
     width: 100%;
     height: 100%;
-
 `
 
 
 
 
-export {MainContainer, ErrorMessage, ProfileContainer, ProfilePicture, Username, DetailsContainer, FullNameContainer, LocationContainer, About, AboutContainer, InfoContainer, Icon, UsernameInput, NameInput, AboutInput}
+export {MainContainer, ErrorMessage, ProfileContainer, ProfilePicture, Username, DetailsContainer, FullNameContainer, LocationContainer, About, AboutContainer, InfoContainer, Icon, UsernameInput, NameInput, AboutInput, ProfilePictureContainer}

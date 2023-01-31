@@ -9,13 +9,14 @@ import config from "config";
 import cookieParser from "cookie-parser"
 import credentials from "./api/v1/middlewares/middleware.credentials";
 const corsOptions = require("../config/corsOptions")
-// import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary'
 
 const app = express();
 const PORT = process.env.PORT || 8800;
-// const cloudinaryConfig = config.get("CLOUDINARY");
+const cloudinaryConfig = config.get("CLOUDINARY");
 
-// cloudinary.config(cloudinaryConfig);
+//@ts-ignore
+cloudinary.config(cloudinaryConfig)
 dotenv.config();
 mongoose.set("strictQuery", true);
 

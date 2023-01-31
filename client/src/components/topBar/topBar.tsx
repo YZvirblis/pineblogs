@@ -5,6 +5,8 @@ import { useLocation , useNavigate} from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useLogout from '../../hooks/useLogout';
 import profilePlaceholder from "../../resources/pictures/profile.jpg"
+import {  FaDoorClosed } from 'react-icons/fa';
+
 
 
 const TopBar = () => {
@@ -15,7 +17,7 @@ const TopBar = () => {
 
 
   useEffect(() => {
-    console.log(auth)
+    // console.log(auth)
   }, [auth])
   
 
@@ -24,13 +26,15 @@ const TopBar = () => {
       <topBarStyle.MainContainer>
       <topBarStyle.ItemContatiner>
       </topBarStyle.ItemContatiner>
-      <topBarStyle.ItemContatiner>
+        {/*@ts-ignore*/}
+      <topBarStyle.ItemContatiner align="center">
         <div className='flex row justify-around align-center items-center'>
           <topBarStyle.title>Pineblogs</topBarStyle.title>
           <topBarStyle.logo src={require("../../resources/pictures/logo.png")}/>
         </div>
       </topBarStyle.ItemContatiner>
-      <topBarStyle.ItemContatiner>
+        {/*@ts-ignore*/}
+      <topBarStyle.ItemContatiner align="right">
         {/*@ts-ignore*/}
           <loginStyle.StyledButton onClick={() => navigate(location.pathname === "/register" ? "/login" : "/register")} size="small">{location.pathname === "/register" ? "Login" : "Register"}</loginStyle.StyledButton>
       </topBarStyle.ItemContatiner>
@@ -40,20 +44,24 @@ const TopBar = () => {
   const renderLoggedIn = () => {
     return (
       <topBarStyle.MainContainer>
-      <topBarStyle.ItemContatiner>
+        {/*@ts-ignore*/}
+      <topBarStyle.ItemContatiner align="left">
         <topBarStyle.profileContainer onClick={() => navigate(`/profile?id=${auth.user._id}`)}>
           <topBarStyle.profileImage src={auth.user.image ? auth.user.image : profilePlaceholder}/>
           <topBarStyle.username>{auth.user.username}</topBarStyle.username>
         </topBarStyle.profileContainer>
       </topBarStyle.ItemContatiner>
-      <topBarStyle.ItemContatiner>
+        {/*@ts-ignore*/}
+      <topBarStyle.ItemContatiner align="center">
         <div onClick={() => navigate("/")} className='flex row justify-around align-center items-center'>
           <topBarStyle.logo src={require("../../resources/pictures/logo.png")}/>
         </div>
       </topBarStyle.ItemContatiner>
-      <topBarStyle.ItemContatiner>
         {/*@ts-ignore*/}
-          <loginStyle.StyledButton onClick={() => {logout(); navigate("/login");}} size="small">Logout</loginStyle.StyledButton>
+      <topBarStyle.ItemContatiner align="right" onClick={() => {logout(); navigate("/login");}}>
+        <span className='mr-3 cursor-pointer'>Logout</span>
+        {/*@ts-ignore*/}
+          <topBarStyle.Icon withBg pointer><FaDoorClosed/></topBarStyle.Icon>
       </topBarStyle.ItemContatiner>
 </topBarStyle.MainContainer>
     )

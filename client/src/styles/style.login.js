@@ -88,7 +88,7 @@ const StyledInput = styled.input`
 
 const ButtonContainer = styled.div`
     margin: 1rem 0 2rem 0;
-    width: 100%;
+    width: 70%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,7 +138,7 @@ const PageContainer = styled.div`
     height: 100vh;
     width: 100vw;
     background-size: cover;
-    background-image: url(${backgrounds[Math.floor(Math.random() * 7)]});
+    background-image: url(${backgrounds[Math.floor(Math.random() * 6)]});
     /* background: radial-gradient(circle, rgba(219,181,66,1) 0%, rgba(136,217,58,1) 35%, rgba(90,185,131,1) 100%); */
     display: flex;
     justify-content: center;

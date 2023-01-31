@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import {  FaPencilAlt } from 'react-icons/fa';
+import {  FaPencilAlt, FaLocationArrow } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import CloudinaryUploadWidget from '../components/tools/CloudinaryUploadWidget';
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { profileStyle, loginStyle } from '../styles';
+import useCloudinary from '../hooks/useCloudinary';
+import { profileStyle } from '../styles';
+import {AdvancedImage} from '@cloudinary/react';
+import { fill, scale } from '@cloudinary/url-gen/actions/resize';
+import { byRadius } from '@cloudinary/url-gen/actions/roundCorners';
+import { byAngle } from '@cloudinary/url-gen/actions/rotate';
 
 const Profile = () => {
     const navigate = useNavigate()
@@ -15,6 +21,7 @@ const Profile = () => {
     const [isEditable, setIsEditable] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const {auth, setAuth} = useAuth()
+    const cld = useCloudinary()
 
     const [username, setUsername] = useState<string>()
     const [firstName, setFirstName] = useState<string>()
@@ -23,6 +30,7 @@ const Profile = () => {
     const [about, setAbout] = useState<string>()
 
     useEffect(() => {
+        console.log("effect")
         !profileID && navigate("/")
         const getUserProfile = async () => {
             try{
@@ -45,14 +53,14 @@ const Profile = () => {
             setLocation(auth.user.location)
             setAbout(auth.user.description)
         }
-    }, [isEdit])
+    }, [isEdit, auth])
 
     const updateUser = async () => {
         const {username: oldUsername, firstName: oldFirstname, lastName: oldLastName, location: oldLocation, description: oldDescription, ...other } = auth.user
         const newUser = {username,firstName,lastName,location,description:about, ...other}
         const res = await axiosPrivate.put(`/v1/users/update/${auth.user._id}`, newUser)
         if(res.status === 200){
-            setAuth(newUser)
+            setAuth({user:newUser, token: auth.token})
         }
         else{
             setError("Something wen wrong.")
@@ -68,11 +76,18 @@ const Profile = () => {
                 !isEdit
                     ?
                         <profileStyle.ProfileContainer>
-                            <profileStyle.ProfilePicture/>
+                            <profileStyle.ProfilePictureContainer>
+                                {userProfile.profilePicture
+                                    ?
+                                        <AdvancedImage cldImg={cld.image(`${userProfile.profilePicture}`).resize(fill().width(1000).height(1000)).roundCorners(byRadius(50))}/>
+                                    :
+                                        <profileStyle.ProfilePicture/>
+                                }
+                            </profileStyle.ProfilePictureContainer>
                             <profileStyle.InfoContainer
                             className='relative'>
                                 {/* @ts-ignore */}
-                                {isEditable ? <profileStyle.Icon className='absolute top-2 right-2' withBg onClick={() => setIsEdit(!isEdit)}> <FaPencilAlt/> </profileStyle.Icon>: null}
+                                {isEditable ? <profileStyle.Icon className='absolute top-2 right-2' withBg pointer onClick={() => setIsEdit(!isEdit)}> <FaPencilAlt/> </profileStyle.Icon>: null}
                                 <profileStyle.Username>{userProfile.username}</profileStyle.Username>
                                 <profileStyle.DetailsContainer>
                                     <profileStyle.FullNameContainer>
@@ -80,6 +95,7 @@ const Profile = () => {
                                         <span>{userProfile.lastName}</span>
                                     </profileStyle.FullNameContainer>
                                     <profileStyle.LocationContainer>
+                                        <profileStyle.Icon className='default'><FaLocationArrow/></profileStyle.Icon>
                                         <span>{userProfile.location}</span>
                                     </profileStyle.LocationContainer>
                                 </profileStyle.DetailsContainer>
@@ -90,12 +106,18 @@ const Profile = () => {
                         </profileStyle.ProfileContainer>
                     :
                         <profileStyle.ProfileContainer>
-                            <profileStyle.ProfilePicture/>
+                            <CloudinaryUploadWidget userID={auth.user._id} isProfile postID={null} multiple={false}>
+                                {userProfile.profilePicture ? 
+                                    <AdvancedImage cldImg={cld.image(`${userProfile.profilePicture}`).resize(fill().width(1000).height(1000)).roundCorners(byRadius(50))}/>
+                                :    
+                                    <profileStyle.ProfilePicture/> 
+                                }
+                            </CloudinaryUploadWidget>
                             <profileStyle.InfoContainer
                             className='relative'>
                                 <p>{error}</p>
                                 {/* @ts-ignore */}
-                                <profileStyle.Icon className='absolute top-2 right-2' withBg onClick={async () => {isEdit && await updateUser(); setIsEdit(!isEdit)}}> <FaPencilAlt/> </profileStyle.Icon>
+                                <profileStyle.Icon className='absolute top-2 right-2' withBg onClick={async () => {isEdit && await updateUser(); setIsEdit(!isEdit)}} pointer> <FaPencilAlt/> </profileStyle.Icon>
                                 <profileStyle.UsernameInput type="text" placeholder="Username" value={username} onChange={(e) => 
                                     {
                                         if(e.target.value.length > 24){

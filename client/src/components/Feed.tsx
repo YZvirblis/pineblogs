@@ -28,7 +28,7 @@ return (
         <feedStyle.PostsContainer>
         {
             posts.map((post: any, index: number) => {
-                return <Post post={post}/>
+                return <Post key={index} post={post}/>
             })
         }
         </feedStyle.PostsContainer>

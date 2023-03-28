@@ -4,6 +4,7 @@ import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { feedStyle, loginStyle } from '../styles'
 import SocialMediaIcon from './reusables/SocialMediaIcon'
+import CloudinaryUploadWidget from './tools/CloudinaryUploadWidget'
 
 
 const CreatePost = () => {
@@ -29,7 +30,6 @@ const createPost = async () => {
             desc: content,
             tags
         }
-        console.log(post)
         const res = await axiosPrivate.post("/v1/posts/create/", post)
         setContent("")
         setTags([])
@@ -74,7 +74,9 @@ const uploadPhotoBg = "linear-gradient(to right, #89e787 0%, #35ce47 100%);"
           : null
     }
     <loginStyle.ButtonContainer>
-              <SocialMediaIcon color={`${uploadPhotoBg}`}><FaPhotoVideo/></SocialMediaIcon>
+    <CloudinaryUploadWidget userID={auth.user._id} isProfile={false} postID={null} multiple={false}>
+              <SocialMediaIcon color={`${uploadPhotoBg}`} ><FaPhotoVideo /></SocialMediaIcon>
+        </CloudinaryUploadWidget>
               <loginStyle.StyledButton onClick={() => createPost()}>POST</loginStyle.StyledButton>
           </loginStyle.ButtonContainer>
   </feedStyle.CreatePostContainer>

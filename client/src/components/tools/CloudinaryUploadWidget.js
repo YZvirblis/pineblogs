@@ -19,8 +19,8 @@ const CloudinaryUploadWidget = ({userID, isProfile, postID ,multiple, children})
       // showAdvancedOptions: true,  //add advanced options (public_id and tag)
       // sources: [ "local", "url"], // restrict the upload sources to URL and local files
       multiple,  //restrict upload to a single file
-      folder: `pineblogs/${userID}/${isProfile ? "profile/" : postID}/`, //upload files to the specified folder
-      tags: [isProfile ? "profile" : "post", postID, userID], //add the given tags to the uploaded files
+      folder: `pineblogs/${userID}/${isProfile ? "profile/" : "posts"}/`, //upload files to the specified folder
+      tags: [isProfile ? "profile" : "post", userID], //add the given tags to the uploaded files
       // context: {alt: "user_uploaded"}, //add the given context data to the uploaded files
       clientAllowedFormats: isProfile && ["jpg, jpeg, png"], //restrict uploading to image files only
       maxImageFileSize: 2000000,  //restrict file size to less than 2MB

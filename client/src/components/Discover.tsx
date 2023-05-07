@@ -6,14 +6,14 @@ import CreatePost from './CreatePostComponent'
 import Post from './Post'
 
 
-const Feed = () => {
+const Discover = () => {
     const {auth} = useAuth()
     const axiosPrivate = useAxiosPrivate()
     const [posts, setPosts] = useState([])
 
 
     const fetchPosts = async () => {
-        const res = await axiosPrivate.get(`/v1/posts/feed/${auth.user._id}`)
+        const res = await axiosPrivate.get(`/v1/posts/all/`)
         setPosts(res.data)
     }
 
@@ -36,4 +36,4 @@ return (
   )
 }
 
-export default Feed
+export default Discover

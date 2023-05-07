@@ -1,29 +1,32 @@
-import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react'
+import React, { FormEvent, KeyboardEvent, useEffect, useState, useRef } from 'react'
 import { FaArrowAltCircleRight, FaBackspace, FaPhotoVideo } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { feedStyle, loginStyle } from '../styles'
-import SocialMediaIcon from './reusables/SocialMediaIcon'
-import CloudinaryUploadWidget from './tools/CloudinaryUploadWidget'
-
+import { createPostStyle, homeStyle } from '../styles'
+import { Editor } from "@tinymce/tinymce-react";
 
 const CreatePost = () => {
+    const editorRef = useRef<Editor>();
     const {auth} = useAuth()
     const axiosPrivate = useAxiosPrivate()
-    const [content, setContent] = useState("")
+    // const [content, setContent] = useState("")
     const [currentTag, setCurrentTag] = useState("")
     const [tags, setTags] = useState<string[]>([])
+    const navigate = useNavigate()
 
     useEffect(() => {
-
     }, [tags])
     
  const addTag = () => {
-    setTags([...tags, currentTag.replaceAll(' ', '')]);
+    setTags([...tags, currentTag.replaceAll(' ', '').replaceAll("#", "")]);
     setCurrentTag("")
 }
 
 const createPost = async () => {
+    //@ts-ignore
+    const content = editorRef && editorRef.current && editorRef.current.getContent()
     if(content.length > 0) {
         const post = {
             userID: auth.user._id,
@@ -31,30 +34,47 @@ const createPost = async () => {
             tags
         }
         const res = await axiosPrivate.post("/v1/posts/create/", post)
-        setContent("")
         setTags([])
         setCurrentTag("")
+        navigate("/")
     } else {
         console.log("WRITE SOMETHING")
     }
 }
 
-const uploadPhotoBg = "linear-gradient(to right, #89e787 0%, #35ce47 100%);"
   return (
+    <homeStyle.MainContainer>
+    <createPostStyle.mainContainer>
     <feedStyle.CreatePostContainer>
-    <feedStyle.CreatePostInput maxLength={500} placeholder='Write something :)' value={content} onChange={(e: FormEvent) => {
-      //@ts-ignore
-      setContent(e.target.value);
-      }}/>
+    <Editor
+    onInit={(evt, editor) => {
+        //@ts-ignore
+        editorRef.current = editor}}
+        apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
+        initialValue="<p>Write here 🌲</p>"
+        init={{
+          height: 500,
+          width:"100%",
+          menubar: false,
+          link_assume_external_targets: true,
+          plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount'
+          ],
+          toolbar: "undo redo | styleselect | bold italic underline | fontsize | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media fullscreen | forecolor backcolor emoticons",
+          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        }}
+        />
     <feedStyle.PostTagsInputContainer>
       <feedStyle.PostTagsInput placeholder='#Tags' value={currentTag} onChange={(e: FormEvent) => {
           //@ts-ignore
           setCurrentTag(e.target.value)}}
           onKeyDown={(e: KeyboardEvent) => {
               // console.log(e.keyCode)
-              e.keyCode === 13 && addTag()
+              e.keyCode === 13 && currentTag !== "" && addTag()
               }}/>
-      <span className='absolute right-3 cursor-pointer' onClick={() => addTag()}><FaArrowAltCircleRight/></span>
+      <span className='absolute right-3 cursor-pointer' onClick={() => {currentTag !== "" && addTag()}}><FaArrowAltCircleRight/></span>
     </feedStyle.PostTagsInputContainer>
     {
       tags.length > 0
@@ -74,12 +94,12 @@ const uploadPhotoBg = "linear-gradient(to right, #89e787 0%, #35ce47 100%);"
           : null
     }
     <loginStyle.ButtonContainer>
-    <CloudinaryUploadWidget userID={auth.user._id} isProfile={false} postID={null} multiple={false}>
-              <SocialMediaIcon color={`${uploadPhotoBg}`} ><FaPhotoVideo /></SocialMediaIcon>
-        </CloudinaryUploadWidget>
               <loginStyle.StyledButton onClick={() => createPost()}>POST</loginStyle.StyledButton>
           </loginStyle.ButtonContainer>
   </feedStyle.CreatePostContainer>
+  </createPostStyle.mainContainer>
+  </homeStyle.MainContainer>
+
   )
 }
 

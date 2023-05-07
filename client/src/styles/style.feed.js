@@ -46,7 +46,6 @@ const CreatePostContainer = styled.div `
     justify-content: space-between;
     border-radius: 0 0 25px 25px;
     margin: 0 0 1vw 0;
-    background: gray;
 
 `
 const CreatePostInput = styled.textarea `
@@ -65,6 +64,7 @@ const PostTagsInputContainer = styled.div `
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 1vh;
 `
 
 const PostTagsInput = styled.input `

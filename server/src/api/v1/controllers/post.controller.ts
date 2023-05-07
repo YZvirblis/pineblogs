@@ -7,6 +7,7 @@ import {
   getPostHandler,
   getPostsHandler,
   getUserPostsHandler,
+  getAllPostsHandler,
 } from "../handlers/post.handler";
 import authenticateToken from "../middlewares/middleware.auth";
 
@@ -23,6 +24,7 @@ const PostController = () => {
   router.get("/get/:id", getPost);
   router.get("/feed/:id", authenticateToken, getPosts);
   router.get("/getuserposts/:id", authenticateToken, getUserPosts);
+  router.get("/all/", getAllPosts)
   return router;
 };
 
@@ -105,6 +107,16 @@ const getUserPosts = async (
 ) => {
   const id = request.params.id;
   const res: any = await getUserPostsHandler(id);
+  response.status(res.status).json(res.message);
+};
+
+// GET ALL POSTS
+const getAllPosts = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const res: any = await getAllPostsHandler();
   response.status(res.status).json(res.message);
 };
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { Routes, Route, Outlet } from "react-router-dom";
@@ -8,9 +8,12 @@ import RequireAuth from "./components/outlets/RequireAuth";
 import PersistLogin from "./components/outlets/PersistLogin";
 import TopBar from "./components/topBar/topBar";
 import Profile from "./pages/Profile";
+import CreatePost from "./pages/CreatePost";
+import Discover from "./components/Discover";
 
 
 function App() {
+  
   
   
   return (
@@ -21,11 +24,16 @@ function App() {
         {/* PUBLIC ROUTES */}
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
+            <Route path="/" element={<Home/>}/>
         {/* PROTECTED ROUTES */}
         <Route path="/" element={<PersistLogin/>}>
           <Route path="/" element={<RequireAuth/>}>
             <Route path="/profile" element={<Profile/>}/>
-            <Route path="/" element={<Home/>}/>
+            <Route path="/newpost" element={<CreatePost/>}/>
+            {
+              // FEED PAGE
+              // CREATE POST PAGE
+            }
             </Route>
           </Route>
       </Route>

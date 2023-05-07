@@ -54,3 +54,10 @@
   color: red;
   margin-left: 0.25rem;
 }
+
+.quill {
+  height: 100%;
+  width: 100%;
+  border: none;
+  cursor: default;
+}

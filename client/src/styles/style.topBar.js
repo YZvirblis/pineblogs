@@ -6,9 +6,9 @@ margin: 0;
     height: 10vh;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(9.5px);
-    position: fixed;
+    /* position: fixed; */
     top: 0;
-    z-index: 2;
+    /* z-index: 2; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -81,5 +81,14 @@ const Icon = styled.h3`
 
     }
 `
+const redirectButton = styled.div`
+background-color: white;
+border-radius: 10%;
+width: 100px;
+padding: .5rem 1rem .5rem 1rem;
+margin-right: .5rem;
+cursor: pointer;
 
-export {MainContainer, ItemContatiner, logo, title, profileContainer, profileImage, username, Icon}
+`
+
+export {MainContainer, ItemContatiner, logo, title, profileContainer, profileImage, username, Icon, redirectButton}

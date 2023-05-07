@@ -1,12 +1,12 @@
 import React from 'react'
-import Feed from '../components/Feed'
+import Discover from '../components/Discover'
 import Users from '../components/Users'
 import { homeStyle } from '../styles'
 
 const Home = () => {
   return (
     <homeStyle.MainContainer>
-      <Feed/>
+      <Discover/>
     </homeStyle.MainContainer>
   )
 }

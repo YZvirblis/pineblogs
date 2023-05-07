@@ -128,6 +128,17 @@ const getUserPostsHandler = async (id: string) => {
   }
 };
 
+// GET ALL USER TIMELINE POSTS
+const getAllPostsHandler = async () => {
+  try {
+    const posts: IPost[] = await Post.find({ });
+    return { message: posts, status: 200 };
+  } catch (err) {
+    console.log(err);
+    return { message: err, status: 500 };
+  }
+};
+
 export {
   createPostHandler,
   updatePostHandler,
@@ -136,4 +147,5 @@ export {
   getPostHandler,
   getPostsHandler,
   getUserPostsHandler,
+  getAllPostsHandler,
 };

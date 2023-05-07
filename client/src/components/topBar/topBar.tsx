@@ -25,6 +25,8 @@ const TopBar = () => {
     return (
       <topBarStyle.MainContainer>
       <topBarStyle.ItemContatiner>
+      <topBarStyle.redirectButton onClick={() => navigate(`/`)}>DISCOVER</topBarStyle.redirectButton>
+          <topBarStyle.redirectButton onClick={() => navigate(`/random`)}>RANDOM</topBarStyle.redirectButton>
       </topBarStyle.ItemContatiner>
         {/*@ts-ignore*/}
       <topBarStyle.ItemContatiner align="center">
@@ -46,10 +48,17 @@ const TopBar = () => {
       <topBarStyle.MainContainer>
         {/*@ts-ignore*/}
       <topBarStyle.ItemContatiner align="left">
-        <topBarStyle.profileContainer onClick={() => navigate(`/profile?id=${auth.user._id}`)}>
+        {/* <topBarStyle.profileContainer onClick={() => navigate(`/profile?id=${auth.user._id}`)}>
           <topBarStyle.profileImage src={auth.user.image ? auth.user.image : profilePlaceholder}/>
           <topBarStyle.username>{auth.user.username}</topBarStyle.username>
-        </topBarStyle.profileContainer>
+        </topBarStyle.profileContainer> */}
+        
+          <topBarStyle.redirectButton onClick={() => navigate(`/profile?id=${auth.user._id}`)}>POSTS</topBarStyle.redirectButton>
+          <topBarStyle.redirectButton onClick={() => navigate(`/feed?id=${auth.user._id}`)}>FEED</topBarStyle.redirectButton>
+          <topBarStyle.redirectButton onClick={() => navigate(`/`)}>DISCOVER</topBarStyle.redirectButton>
+          <topBarStyle.redirectButton onClick={() => navigate(`/random`)}>RANDOM</topBarStyle.redirectButton>
+          <topBarStyle.redirectButton onClick={() => navigate(`/newpost`)}>CREATE</topBarStyle.redirectButton>
+        
       </topBarStyle.ItemContatiner>
         {/*@ts-ignore*/}
       <topBarStyle.ItemContatiner align="center">

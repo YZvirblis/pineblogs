@@ -1,20 +1,20 @@
 import styled from "styled-components"
+import backgrounds from "../resources/backgrounds"
+
 
 
 const MainContainer = styled.div`
 width: 90%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    align-self: center;
-    justify-self: center;
+    flex-direction: row;
+    margin: 2vh 0 2vh 0;
 `
 const PostsContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
 `
+
 const PostContainer = styled.div `
     display: flex;
     flex-direction: column;
@@ -22,13 +22,19 @@ const PostContainer = styled.div `
     justify-content: space-between;
     text-align: center;
     width: 100%;
-    padding: 3vw;
+
+    margin: 1vh;
+
+`
+const postContent = styled.div`
+    -webkit-box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65); 
+    box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65);
     background: white;
     border-radius: 10px;
-    margin: 1vh 0 10 0;
-    -webkit-box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65); 
-box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65);
-z-index: 1;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 `
 const IconsContainer = styled.div`
 margin-top: 3vh;
@@ -116,6 +122,7 @@ const wrightCommentWrapper = styled.div`
  width: 100%;
  height: fit-content;
  align-items: center;
+ margin-top: 2vh;
 `
 const wrightCommentInput = styled.textarea`
  width: 100%;
@@ -145,15 +152,17 @@ display: flex;
 const commentWrapper = styled.div `
     display: flex;
     flex-direction: row;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
-    padding: 1vw;
+    padding: .5vw;
+    border-bottom: 1px lightgray solid;
 `
 
 const sideBtn = styled.button`
     display: flex;
-    width: 50px;
-    height: 50px;
+    width: ${props => props.small ? "25px" : "50px"};
+    height: ${props => props.small ? "25px" : "50px"};
+    font-size: ${props => props.small ? "small" : "larger"};
     border-radius: 50%;
     background-color: ${props => props.liked ? "red" : "white"};
     -webkit-box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65); 
@@ -162,15 +171,21 @@ const sideBtn = styled.button`
     align-content: center;
     text-align: center;
     justify-content: center;
-    font-size: larger;
     margin: 1vh;
 
 `
 const postSideBtnsContainer = styled.div`
 display: flex;
 flex-direction: column;
-    position: absolute;
-    right: 3vw;
+width: 10%;
+background-image: url(${props => backgrounds[props.bgIndex]});
+background-size: cover;
+
+align-items: center;
+justify-content: flex-start;
+border-top-right-radius: 10px;
+border-bottom-right-radius: 10px;
+padding: 1vw;
 `
 
-export {MainContainer, PostsContainer, PostContainer, CreatePostContainer, CreatePostInput, PostTagsInput, PostTagsInputContainer, TagContainer, TagsContainer, IconsContainer, styledIcon, commentsSection, wrightCommentWrapper, wrightCommentInput,commentButton,commentWrapper, sideBtn, postSideBtnsContainer}
+export {MainContainer, PostsContainer, PostContainer, CreatePostContainer, CreatePostInput, PostTagsInput, PostTagsInputContainer, TagContainer, TagsContainer, IconsContainer, styledIcon, commentsSection, wrightCommentWrapper, wrightCommentInput,commentButton,commentWrapper, sideBtn, postSideBtnsContainer, postContent}

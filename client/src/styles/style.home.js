@@ -2,9 +2,7 @@ import styled from "styled-components"
 
 
 const MainContainer = styled.div`
-    padding: 10vh 0 0 0 ;
-    width: 100vw;
-    height: 100vh;
+    /* padding: 10vh 0 0 0 ; */
     display: flex;
     flex-direction: row;
     align-items: flex-start;

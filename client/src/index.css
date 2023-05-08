@@ -13,9 +13,6 @@
 
 .body {
   font-family: 'Raleway', sans-serif;
-
-  height: 100vh;
-  width: 100vw;
 }
 
 .loginBackground{
@@ -53,11 +50,4 @@
 .invalid {
   color: red;
   margin-left: 0.25rem;
-}
-
-.quill {
-  height: 100%;
-  width: 100%;
-  border: none;
-  cursor: default;
 }

@@ -24,7 +24,6 @@ const Discover = () => {
 
 return (
     <feedStyle.MainContainer>
-        {/* <CreatePost/> */}
         <feedStyle.PostsContainer>
         {
             posts.map((post: any, index: number) => {

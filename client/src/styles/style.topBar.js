@@ -4,11 +4,9 @@ const MainContainer = styled.div`
 margin: 0;
     width: 100vw;
     height: 10vh;
-    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(9.5px);
-    /* position: fixed; */
     top: 0;
-    /* z-index: 2; */
+    z-index: 2;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -16,6 +14,9 @@ margin: 0;
     align-items: center;
     text-align: center;
     align-content: center;
+    position: sticky;
+    background: white;
+
 `
 
 const ItemContatiner = styled.div`

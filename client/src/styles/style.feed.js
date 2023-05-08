@@ -135,10 +135,42 @@ background-color: lightgreen;
 color: white;
 height: 50px;
 width: 50px;
+display: flex;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+    font-size: larger;
 `
 const commentWrapper = styled.div `
     display: flex;
     flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    padding: 1vw;
 `
 
-export {MainContainer, PostsContainer, PostContainer, CreatePostContainer, CreatePostInput, PostTagsInput, PostTagsInputContainer, TagContainer, TagsContainer, IconsContainer, styledIcon, commentsSection, wrightCommentWrapper, wrightCommentInput,commentButton,commentWrapper}
+const sideBtn = styled.button`
+    display: flex;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: ${props => props.liked ? "red" : "white"};
+    -webkit-box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65); 
+    box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65);
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+    font-size: larger;
+    margin: 1vh;
+
+`
+const postSideBtnsContainer = styled.div`
+display: flex;
+flex-direction: column;
+    position: absolute;
+    right: 3vw;
+`
+
+export {MainContainer, PostsContainer, PostContainer, CreatePostContainer, CreatePostInput, PostTagsInput, PostTagsInputContainer, TagContainer, TagsContainer, IconsContainer, styledIcon, commentsSection, wrightCommentWrapper, wrightCommentInput,commentButton,commentWrapper, sideBtn, postSideBtnsContainer}

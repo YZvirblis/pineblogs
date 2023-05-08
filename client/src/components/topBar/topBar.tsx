@@ -53,10 +53,10 @@ const TopBar = () => {
           <topBarStyle.username>{auth.user.username}</topBarStyle.username>
         </topBarStyle.profileContainer> */}
         
-          <topBarStyle.redirectButton onClick={() => navigate(`/profile?id=${auth.user._id}`)}>POSTS</topBarStyle.redirectButton>
-          <topBarStyle.redirectButton onClick={() => navigate(`/feed?id=${auth.user._id}`)}>FEED</topBarStyle.redirectButton>
+          <topBarStyle.redirectButton onClick={() => navigate(`/profile?id=${auth.user._id}`)}>MY POSTS</topBarStyle.redirectButton>
+          {/* <topBarStyle.redirectButton onClick={() => navigate(`/feed?id=${auth.user._id}`)}>FEED</topBarStyle.redirectButton> */}
           <topBarStyle.redirectButton onClick={() => navigate(`/`)}>DISCOVER</topBarStyle.redirectButton>
-          <topBarStyle.redirectButton onClick={() => navigate(`/random`)}>RANDOM</topBarStyle.redirectButton>
+          {/* <topBarStyle.redirectButton onClick={() => navigate(`/random`)}>RANDOM</topBarStyle.redirectButton> */}
           <topBarStyle.redirectButton onClick={() => navigate(`/newpost`)}>CREATE</topBarStyle.redirectButton>
         
       </topBarStyle.ItemContatiner>

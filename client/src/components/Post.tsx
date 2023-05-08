@@ -1,9 +1,10 @@
 import React, { FormEvent, useEffect, useState } from 'react'
-import { FaComment, FaHeart, FaPencilAlt } from 'react-icons/fa'
+import { FaComment, FaHeart, FaTrash } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { feedStyle } from '../styles'
 import TextareaAutosize from 'react-textarea-autosize';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { formatDate, commentsOrderByDate } from './tools/HelperFunctions';
 
 
 const Post = ({post}: any) => {
@@ -27,9 +28,10 @@ const Post = ({post}: any) => {
 
             const comment = {
                 userID: auth.user._id,
-            postID: post._id,
-            text: commentInput,
-            date: Date.now()
+                username: auth.user.username,
+                postID: post._id,
+                text: commentInput,
+                date: Date.now()
         }
         const updated = [...comments, comment]
         setComments(updated)
@@ -49,30 +51,45 @@ const Post = ({post}: any) => {
                             <div dangerouslySetInnerHTML={{__html: post.desc}}></div>
                             {
                                 auth.user ?
-                                <feedStyle.IconsContainer>
-                    {/*@ts-ignore*/}
-                        <feedStyle.styledIcon liked = {isLiked}><FaHeart/></feedStyle.styledIcon>
-                        <feedStyle.styledIcon><FaComment/></feedStyle.styledIcon>
-                </feedStyle.IconsContainer>
+                                <feedStyle.postSideBtnsContainer>
+                                    
+                        <feedStyle.sideBtn
+                            //@ts-ignore
+                            liked = {isLiked}><FaHeart/></feedStyle.sideBtn>
+                            {auth.user && post.userID == auth.user._id ? 
+                        <feedStyle.sideBtn
+                        //@ts-ignore
+                        liked = {false}><FaTrash/></feedStyle.sideBtn>
+                    : null}
+                                </feedStyle.postSideBtnsContainer>
             : null
             }
             </feedStyle.PostContainer>
             {comments && comments.length > 0 ?
             <feedStyle.commentsSection>
-                {comments.map(async (c: any ,i: any) => {
-                    const res = await axiosPrivate.get(`/v1/users/getuser/${c.userID}`)
-                    console.log(res.data)
+                {comments.map((c: any ,i: any) => {
+                    const d = formatDate(c.date)
                     return(
                         <feedStyle.commentWrapper key={i}>
-                            <span>{res.data.username}</span>
-                            <p>{c.text}</p>
-                            <span>{c.date}</span>
-                            {c.text}</feedStyle.commentWrapper>
+                            <div>
+                                <span style={auth.user && c.userID == auth.user._id ? {fontWeight:"bold", color:"light-green"} : {fontWeight:"normal"}}>{c.username + ": "}</span>
+                                <p>{c.text}</p>
+                            </div>
+                            <span>{(d)}</span>
+                            {auth.user && c.userID == auth.user._id ? 
+                                <feedStyle.postSideBtnsContainer>
+
+                        <feedStyle.sideBtn
+                        //@ts-ignore
+                        liked = {false}><FaTrash/></feedStyle.sideBtn>
+                        </feedStyle.postSideBtnsContainer>
+                    : null}
+                        </feedStyle.commentWrapper>
                     )
-                })}
+                }).sort(commentsOrderByDate)}
                 {auth.user?
                 <feedStyle.wrightCommentWrapper>
-                <TextareaAutosize value={commentInput} style={{width:"75%", padding:"1vw", resize:"none", borderRadius:"10px", border:"solid 1px black"}} onChange={(e:FormEvent) => {
+                <TextareaAutosize value={commentInput} style={{width:"75%", padding:"1vw", resize:"none", borderRadius:"10px", border:"solid 1px black", overflow:"hidden"}} onChange={(e:FormEvent) => {
                     //@ts-ignore
                     setCommentInput(e.target.value)
                 }}/>
@@ -84,7 +101,7 @@ const Post = ({post}: any) => {
             : auth.user?
             <feedStyle.commentsSection>
                 <feedStyle.wrightCommentWrapper>
-                <TextareaAutosize value={commentInput} style={{width:"75%", padding:"1vw", resize:"none", borderRadius:"10px", border:"solid 1px black"}} onChange={(e:FormEvent) => {
+                <TextareaAutosize value={commentInput} style={{width:"75%", padding:"1vw", resize:"none", borderRadius:"10px", border:"solid 1px black", overflow:"hidden"}} onChange={(e:FormEvent) => {
                     //@ts-ignore
                     setCommentInput(e.target.value)
                 }}/>

@@ -18,10 +18,7 @@ const Discover = () => {
     }
 
     useEffect(() => {
-        if(!posts){
             fetchPosts()
-        }
-        console.log("FFFDDD!!")
     }, [posts])
     
 

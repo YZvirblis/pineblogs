@@ -8,6 +8,7 @@ import {
   getPostsHandler,
   getUserPostsHandler,
   getAllPostsHandler,
+  createComment
 } from "../handlers/post.handler";
 import authenticateToken from "../middlewares/middleware.auth";
 
@@ -25,6 +26,7 @@ const PostController = () => {
   router.get("/feed/:id", authenticateToken, getPosts);
   router.get("/getuserposts/:id", authenticateToken, getUserPosts);
   router.get("/all/", getAllPosts)
+  router.post("/comment/", authenticateToken, comment)
   return router;
 };
 
@@ -119,5 +121,16 @@ const getAllPosts = async (
   const res: any = await getAllPostsHandler();
   response.status(res.status).json(res.message);
 };
+
+// CREATE COMMENT
+const comment = async (
+  request:Request,
+  response:Response,
+  next:NextFunction
+) => {
+  const {comment} = request.body
+  const res: any = await createComment(comment);
+  // response.status(res.status).json(res.message);
+}
 
 export { PostController };

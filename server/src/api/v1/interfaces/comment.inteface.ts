@@ -1,7 +1,10 @@
 interface IComment {
   _id: any;
   userID: any;
+  postID:any;
   text: string;
   date?: Date;
-  replies?: IComment[];
 }
+
+export default IComment;
+

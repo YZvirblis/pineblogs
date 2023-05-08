@@ -1,3 +1,5 @@
+import IComment from "./comment.inteface";
+
 interface IPost {
   userID: any;
   desc?: string;

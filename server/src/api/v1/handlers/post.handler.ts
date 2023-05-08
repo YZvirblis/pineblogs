@@ -3,6 +3,7 @@ import Post from "../models/post.model";
 import User from "../models/user.model";
 import IPost from "../interfaces/post.interface";
 import IUser from "../interfaces/user.interface";
+import IComment from "../interfaces/comment.inteface"
 
 // CREATE POST
 const createPostHandler = async (post: IPost) => {
@@ -139,6 +140,18 @@ const getAllPostsHandler = async () => {
   }
 };
 
+// CREATE COMMENT
+const createComment = async(comment: IComment) => {
+  try{
+    const post = await Post.findById(comment.postID);
+      await post?.updateOne({ $push: { comments: comment } });
+      return { message: "You've commented on the post.", status: 200 }
+  }catch(err){
+    console.log(err)
+    return {message:err,status:500}
+  }
+}
+
 export {
   createPostHandler,
   updatePostHandler,
@@ -148,4 +161,5 @@ export {
   getPostsHandler,
   getUserPostsHandler,
   getAllPostsHandler,
+  createComment
 };

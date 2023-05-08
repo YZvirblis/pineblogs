@@ -18,8 +18,11 @@ const Discover = () => {
     }
 
     useEffect(() => {
-        fetchPosts()
-    }, [])
+        if(!posts){
+            fetchPosts()
+        }
+        console.log("FFFDDD!!")
+    }, [posts])
     
 
 return (
@@ -28,7 +31,7 @@ return (
         <feedStyle.PostsContainer>
         {
             posts.map((post: any, index: number) => {
-                return <Post key={index} post={post}/>
+                return <Post key={index} post={post} />
             })
         }
         </feedStyle.PostsContainer>

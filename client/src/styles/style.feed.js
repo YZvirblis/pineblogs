@@ -7,6 +7,8 @@ width: 90%;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    align-self: center;
+    justify-self: center;
 `
 const PostsContainer = styled.div`
     display: flex;
@@ -23,7 +25,10 @@ const PostContainer = styled.div `
     padding: 3vw;
     background: white;
     border-radius: 10px;
-    margin: 1vh 0 1vh 0;
+    margin: 1vh 0 10 0;
+    -webkit-box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65); 
+box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65);
+z-index: 1;
 `
 const IconsContainer = styled.div`
 margin-top: 3vh;
@@ -95,5 +100,45 @@ const TagContainer = styled.div `
         margin: 0 2px 0 2px;
     }
 `
+const commentsSection = styled.div`
+    width: 90%;
+    background-color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 2vw 1vw 1vw 1vw;
+    -webkit-box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65); 
+box-shadow: 0px 8px 10px -2px rgba(0,0,0,0.65);
+`
+const wrightCommentWrapper = styled.div`
+ display: flex;
+ flex-direction: row;
+ justify-content: space-evenly;
+ width: 100%;
+ height: fit-content;
+ align-items: center;
+`
+const wrightCommentInput = styled.textarea`
+ width: 100%;
+ height: fit-content;
+ overflow-wrap: break-word;
+ border-radius: 10px;
+ overflow: hidden;
+ resize: none;
+ padding: 1vw;
+ box-sizing: border-box;
 
-export {MainContainer, PostsContainer, PostContainer, CreatePostContainer, CreatePostInput, PostTagsInput, PostTagsInputContainer, TagContainer, TagsContainer, IconsContainer, styledIcon}
+`
+const commentButton = styled.button`
+border-radius: 100px;
+padding: 1vw;
+background-color: lightgreen;
+color: white;
+height: 50px;
+width: 50px;
+`
+const commentWrapper = styled.div `
+    display: flex;
+    flex-direction: row;
+`
+
+export {MainContainer, PostsContainer, PostContainer, CreatePostContainer, CreatePostInput, PostTagsInput, PostTagsInputContainer, TagContainer, TagsContainer, IconsContainer, styledIcon, commentsSection, wrightCommentWrapper, wrightCommentInput,commentButton,commentWrapper}

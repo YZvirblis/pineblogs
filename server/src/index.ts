@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import credentials from "./api/v1/middlewares/middleware.credentials";
 const corsOptions = require("../config/corsOptions");
 import { v2 as cloudinary } from "cloudinary";
+// require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 8800;
@@ -28,16 +29,18 @@ app.use(helmet());
 app.use(credentials);
 app.use(cors(corsOptions));
 
-mongoose.connect(config.get("MONGO.url"), (error) => {
-  if (error) {
-    console.log("Database error: ", error);
-  } else {
-    console.log("Database connected.");
+console.log("Initiating");
+mongoose.connect(`${process.env.MONGO_URL}`),
+  (error: any) => {
+    if (error) {
+      console.log("Database error: ", error);
+    } else {
+      console.log("Database connected.");
 
-    app.use("/api/", initializeApiRoutes());
+      app.use("/api/", initializeApiRoutes());
 
-    app.listen(PORT, () => {
-      console.log(`Server is running on port: ${PORT}`);
-    });
-  }
-});
+      app.listen(PORT, () => {
+        console.log(`Server is running on port: ${PORT}`);
+      });
+    }
+  };

@@ -77,10 +77,10 @@ const loginUserHandler = async (email: string, password: string) => {
         //@ts-ignore
         const { password, refreshToken, ...rest } = user._doc;
         //@ts-ignore
-        const accessToken = jwt.sign(rest, config.get("JWT.secret"), {
+        const accessToken = jwt.sign(rest, process.env.JWT_SECRET, {
           expiresIn: "15m",
         });
-        const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {
+        const newRefreshToken = jwt.sign(rest, `${process.env.JWT_REFRESH}`, {
           expiresIn: "1d",
         });
         const updatedUser: IUser = {
@@ -113,7 +113,7 @@ const refreshUserHandler = async (cookies: any) => {
     } else {
       return jwt.verify(
         refreshToken,
-        config.get("JWT.refresh"),
+        `${process.env.JWT_REFRESH}`,
         async (err: any, decodedUser: any) => {
           //@ts-ignore
           if (err || user._doc._id != decodedUser._id) {
@@ -122,10 +122,10 @@ const refreshUserHandler = async (cookies: any) => {
           //@ts-ignore
           const { password, refreshToken, ...rest } = user._doc;
           //@ts-ignore
-          const accessToken = jwt.sign(rest, config.get("JWT.secret"), {
+          const accessToken = jwt.sign(rest, process.env.JWT_SECRET, {
             expiresIn: "15m",
           });
-          const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {
+          const newRefreshToken = jwt.sign(rest, `${process.env.JWT_REFRESH}`, {
             expiresIn: "1d",
           });
           const updatedUser: IUser = {

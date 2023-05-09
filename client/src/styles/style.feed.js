@@ -180,7 +180,8 @@ flex-direction: column;
 width: 10%;
 background-image: url(${props => backgrounds[props.bgIndex]});
 background-size: cover;
-
+position: ${props => props.absolute && "absolute"};
+right: 4%;
 align-items: center;
 justify-content: flex-start;
 border-top-right-radius: 10px;

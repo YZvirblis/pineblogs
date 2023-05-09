@@ -6,8 +6,8 @@ import CreatePost from './CreatePostComponent'
 import Post from './Post'
 
 
-const Discover = () => {
-    const {auth} = useAuth()
+const DiscoverPosts = () => {
+    const { auth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
     const [posts, setPosts] = useState([])
 
@@ -18,21 +18,21 @@ const Discover = () => {
     }
 
     useEffect(() => {
-            fetchPosts()
+        fetchPosts()
     }, [posts])
-    
 
-return (
-    <feedStyle.MainContainer>
-        <feedStyle.PostsContainer>
-        {
-            posts.map((post: any, index: number) => {
-                return <Post key={index} post={post} />
-            })
-        }
-        </feedStyle.PostsContainer>
-  </feedStyle.MainContainer>
-  )
+
+    return (
+        <feedStyle.MainContainer>
+            <feedStyle.PostsContainer>
+                {
+                    posts.map((post: any, index: number) => {
+                        return <Post key={ index } post={ post } />
+                    })
+                }
+            </feedStyle.PostsContainer>
+        </feedStyle.MainContainer>
+    )
 }
 
-export default Discover
+export default DiscoverPosts

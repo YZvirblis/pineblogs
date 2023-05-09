@@ -9,35 +9,35 @@ import PersistLogin from "./components/outlets/PersistLogin";
 import TopBar from "./components/topBar/topBar";
 import Profile from "./pages/Profile";
 import CreatePost from "./pages/CreatePost";
-import Discover from "./components/Discover";
+import Discover from "./components/DiscoverPosts";
 
 
 function App() {
-  
-  
-  
+
+
+
   return (
     <div className="relative">
-      <TopBar/>
-    <Routes>
-      <Route path="/" element={<Layout/>}>
-        {/* PUBLIC ROUTES */}
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-            <Route path="/" element={<Home/>}/>
-        {/* PROTECTED ROUTES */}
-        <Route path="/" element={<PersistLogin/>}>
-          <Route path="/" element={<RequireAuth/>}>
-            <Route path="/profile" element={<Profile/>}/>
-            <Route path="/newpost" element={<CreatePost/>}/>
-            {
-              // FEED PAGE
-              // CREATE POST PAGE
-            }
+      <TopBar />
+      <Routes>
+        <Route path="/" element={ <Layout /> }>
+          {/* PUBLIC ROUTES */ }
+          <Route path="/login" element={ <Login /> } />
+          <Route path="/register" element={ <Register /> } />
+          <Route path="/" element={ <Home /> } />
+          {/* PROTECTED ROUTES */ }
+          <Route path="/" element={ <PersistLogin /> }>
+            <Route path="/" element={ <RequireAuth /> }>
+              <Route path="/profile" element={ <Profile /> } />
+              <Route path="/newpost" element={ <CreatePost /> } />
+              {
+                // FEED PAGE
+                // CREATE POST PAGE
+              }
             </Route>
           </Route>
-      </Route>
-    </Routes>
+        </Route>
+      </Routes>
     </div>
   );
 }

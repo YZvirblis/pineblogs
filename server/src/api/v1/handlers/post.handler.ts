@@ -22,13 +22,15 @@ const createPostHandler = async (post: IPost) => {
 const updatePostHandler = async (postID: string, postUpdate: IPost) => {
   try {
     const post = await Post.findById(postID);
-    if (post && post.userID === postUpdate.userID) {
+    // if (post && post.userID === postUpdate.userID) {
+    if (post) {
       await post.updateOne({ $set: postUpdate });
       return {
         message: "The post has been updated successfully.",
         status: 200,
       };
     } else {
+      console.log("HERE")
       return { message: "You can update only your posts.", status: 403 };
     }
   } catch (err) {

@@ -5,6 +5,8 @@ import { feedStyle } from '../styles'
 import TextareaAutosize from 'react-textarea-autosize';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { formatDate, commentsOrderByDate } from './tools/HelperFunctions';
+import { v4 as uuid } from 'uuid';
+import axios from '../api/axios';
 
 
 const Post = ({ post }: any) => {
@@ -32,6 +34,7 @@ const Post = ({ post }: any) => {
         if (commentInput.length > 0) {
 
             const comment = {
+                _id: uuid(),
                 userID: auth.user._id,
                 username: auth.user.username,
                 postID: post._id,
@@ -48,6 +51,27 @@ const Post = ({ post }: any) => {
             }
         }
 
+    }
+
+    const deleteComment = async (comment: any) => {
+        const commentsArray = post.comments
+        let index = null
+        post.comments.find((e: any, i: any) => {
+            if (e._id == comment._id) {
+                index = i
+            }
+        })
+        commentsArray.splice(index, 1)
+        const { comments, ...rest } = post;
+
+        const newPost = { ...rest, comments: commentsArray }
+
+        try {
+            const res = await axiosPrivate.put(`/v1/posts/update/${comment.postID}`, newPost)
+            setComments(commentsArray)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -89,19 +113,23 @@ const Post = ({ post }: any) => {
                                     <p>{ c.text }</p>
                                 </div>
                                 <div style={ { display: "flex", flexDirection: "column", alignItems: "center", justifyItems: "center" } }>
-                                    <span>{ (d) }</span>
                                     { auth.user && c.userID == auth.user._id ?
-                                        <feedStyle.postSideBtnsContainer>
+                                        <feedStyle.postSideBtnsContainer
+                                            //@ts-ignore
+                                            absolute>
                                             <feedStyle.sideBtn
                                                 //@ts-ignore
-                                                liked={ false } small><FaTrash /></feedStyle.sideBtn>
+                                                liked={ false } small
+                                                onClick={ () => deleteComment(c) }
+                                            ><FaTrash /></feedStyle.sideBtn>
                                         </feedStyle.postSideBtnsContainer>
                                         : null }
+                                    <span>{ (d) }</span>
 
                                 </div>
                             </feedStyle.commentWrapper>
                         )
-                    }).sort(commentsOrderByDate) }
+                    }).sort(commentsOrderByDate).reverse() }
                     { auth.user ?
                         <feedStyle.wrightCommentWrapper>
                             <TextareaAutosize value={ commentInput } style={ { width: "75%", padding: "1vw", resize: "none", borderRadius: "10px", border: "solid 1px black", overflow: "hidden" } } onChange={ (e: FormEvent) => {

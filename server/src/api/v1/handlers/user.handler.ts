@@ -4,7 +4,7 @@ import IUser from "../interfaces/user.interface";
 import { ParsedQs } from "qs";
 import jwt from "jsonwebtoken";
 import config from "config";
-import { v2 as cloudinary } from 'cloudinary'
+import { v2 as cloudinary } from "cloudinary";
 
 const getUserHandler = async (
   id?: string | ParsedQs | string[] | ParsedQs[] | undefined,
@@ -21,8 +21,7 @@ const getUserHandler = async (
   }
 };
 
-const getAllUsersHandler = async (
-) => {
+const getAllUsersHandler = async () => {
   try {
     const users: any = await User.find();
     return { message: users, status: 200 };
@@ -76,14 +75,28 @@ const loginUserHandler = async (email: string, password: string) => {
         return { message: "Password is incorrect", status: 401 };
       } else {
         //@ts-ignore
-        const { password, refreshToken ,...rest } = user._doc;
+        const { password, refreshToken, ...rest } = user._doc;
         //@ts-ignore
-        const accessToken = jwt.sign(rest, config.get("JWT.secret"), {expiresIn: '15m'});
-        const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {expiresIn: '1d'});
-        //@ts-ignore
-        const updatedUser: IUser = {...user._doc, refreshToken: newRefreshToken}
-        await User.findByIdAndUpdate(user?._id, {$set: updatedUser});
-        return { message: {user: {...rest} , accessToken, refreshToken: newRefreshToken}, status: 200 };
+        const accessToken = jwt.sign(rest, config.get("JWT.secret"), {
+          expiresIn: "15m",
+        });
+        const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {
+          expiresIn: "1d",
+        });
+        const updatedUser: IUser = {
+          //@ts-ignore
+          ...user._doc,
+          refreshToken: newRefreshToken,
+        };
+        await User.findByIdAndUpdate(user?._id, { $set: updatedUser });
+        return {
+          message: {
+            user: { ...rest },
+            accessToken,
+            refreshToken: newRefreshToken,
+          },
+          status: 200,
+        };
       }
     }
   } catch (err) {
@@ -92,50 +105,67 @@ const loginUserHandler = async (email: string, password: string) => {
 };
 
 const refreshUserHandler = async (cookies: any) => {
-  const refreshToken = cookies.jwt
+  const refreshToken = cookies.jwt;
   try {
     const user: IUser | null = await User.findOne({ refreshToken });
     if (!user) {
       return { message: "User not found", status: 403 };
     } else {
-      return jwt.verify(refreshToken, config.get("JWT.refresh"), async (err: any, decodedUser: any) => {
-        //@ts-ignore
-        if(err || user._doc._id != decodedUser._id) {return {message: "Forbidden", status: 403}}
-        //@ts-ignore
-        const { password, refreshToken, ...rest } = user._doc;
-        //@ts-ignore
-        const accessToken = jwt.sign(rest, config.get("JWT.secret"), {expiresIn: '15m'});
-        const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {expiresIn: '1d'});
-        //@ts-ignore
-        const updatedUser: IUser = {...user._doc, refreshToken: newRefreshToken}
-        await User.findByIdAndUpdate(user?._id, {$set: updatedUser});
-        return { message: {user: {...rest} , accessToken, refreshToken: newRefreshToken}, status: 200 };
-      })
-  } 
-}
-  catch (err) {
+      return jwt.verify(
+        refreshToken,
+        config.get("JWT.refresh"),
+        async (err: any, decodedUser: any) => {
+          //@ts-ignore
+          if (err || user._doc._id != decodedUser._id) {
+            return { message: "Forbidden", status: 403 };
+          }
+          //@ts-ignore
+          const { password, refreshToken, ...rest } = user._doc;
+          //@ts-ignore
+          const accessToken = jwt.sign(rest, config.get("JWT.secret"), {
+            expiresIn: "15m",
+          });
+          const newRefreshToken = jwt.sign(rest, config.get("JWT.refresh"), {
+            expiresIn: "1d",
+          });
+          const updatedUser: IUser = {
+            //@ts-ignore
+            ...user._doc,
+            refreshToken: newRefreshToken,
+          };
+          await User.findByIdAndUpdate(user?._id, { $set: updatedUser });
+          return {
+            message: {
+              user: { ...rest },
+              accessToken,
+              refreshToken: newRefreshToken,
+            },
+            status: 200,
+          };
+        }
+      );
+    }
+  } catch (err) {
     console.log(`REFRESH ERROR: ${err}`);
   }
-}
+};
 
 const logoutUserHandler = async (cookies: any) => {
-  const refreshToken = cookies.jwt
+  const refreshToken = cookies.jwt;
   try {
     const user: IUser | null = await User.findOne({ refreshToken });
     if (!user) {
       return { message: "User not found", status: 403 };
     } else {
-        //@ts-ignore
-        const updatedUser: IUser = {...user._doc, refreshToken: ""}
-        await User.findByIdAndUpdate(user?._id, {$set: updatedUser});
-        return { message: "Logged out successfully", status: 200 };
-      
-  } 
-}
-  catch (err) {
+      //@ts-ignore
+      const updatedUser: IUser = { ...user._doc, refreshToken: "" };
+      await User.findByIdAndUpdate(user?._id, { $set: updatedUser });
+      return { message: "Logged out successfully", status: 200 };
+    }
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
 const updateUserHandler = async (paramID: string, user: IUser) => {
   if (user._id === paramID || user.isAdmin) {
@@ -148,9 +178,12 @@ const updateUserHandler = async (paramID: string, user: IUser) => {
       }
     }
     try {
-      const fetchedUser = await User.findById(paramID)
+      const fetchedUser = await User.findById(paramID);
       if (fetchedUser && fetchedUser.profilePicture !== user.profilePicture) {
-        cloudinary.uploader.destroy(`${fetchedUser.profilePicture}`, function(result) { });
+        cloudinary.uploader.destroy(
+          `${fetchedUser.profilePicture}`,
+          function (result) {}
+        );
       }
       await User.findByIdAndUpdate(paramID, {
         $set: user,
@@ -230,5 +263,5 @@ export {
   unfollowUserHandler,
   refreshUserHandler,
   logoutUserHandler,
-  getAllUsersHandler
+  getAllUsersHandler,
 };

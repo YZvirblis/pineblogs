@@ -7,9 +7,11 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { formatDate, commentsOrderByDate } from './tools/HelperFunctions';
 import { v4 as uuid } from 'uuid';
 import axios from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const Post = ({ post }: any) => {
+    const navigate = useNavigate()
     const [commentInput, setCommentInput] = useState("")
     const { auth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
@@ -74,6 +76,13 @@ const Post = ({ post }: any) => {
         }
     }
 
+    const deletePost = async () => {
+        try {
+            const res = await axiosPrivate.delete(`/v1/posts/delete/${post._id}/${auth.user._id}`)
+            navigate(window.location)
+        } catch (err) { console.log(err) }
+    }
+
     return (
         <feedStyle.PostContainer>
             <feedStyle.postContent>
@@ -93,7 +102,9 @@ const Post = ({ post }: any) => {
                     { auth.user && post.userID == auth.user._id ?
                         <feedStyle.sideBtn
                             //@ts-ignore
-                            liked={ false }><FaTrash />
+                            liked={ false }
+                            onClick={ () => deletePost() }
+                        ><FaTrash />
                         </feedStyle.sideBtn>
                         : null }
 

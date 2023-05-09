@@ -8,7 +8,7 @@ import {
   getPostsHandler,
   getUserPostsHandler,
   getAllPostsHandler,
-  createComment
+  createComment,
 } from "../handlers/post.handler";
 import authenticateToken from "../middlewares/middleware.auth";
 
@@ -16,17 +16,13 @@ const PostController = () => {
   const router = Router();
   router.post("/create/", authenticateToken, createPost);
   router.put("/update/:id", authenticateToken, updatePost);
-  router.delete(
-    "/delete/:postid/:userid/:publicid",
-    authenticateToken,
-    deletePost
-  );
+  router.delete("/delete/:postid/:userid", authenticateToken, deletePost);
   router.put("/like/:id", authenticateToken, likePost);
   router.get("/get/:id", getPost);
   router.get("/feed/:id", authenticateToken, getPosts);
   router.get("/getuserposts/:id", authenticateToken, getUserPosts);
-  router.get("/all/", getAllPosts)
-  router.post("/comment/", authenticateToken, comment)
+  router.get("/all/", getAllPosts);
+  router.post("/comment/", authenticateToken, comment);
   return router;
 };
 
@@ -61,8 +57,9 @@ const deletePost = async (
 ) => {
   const postID = request.params.postid;
   const userID = request.params.userid;
-  const photoPublicID = request.params.publicid;
-  const res: any = await deletePostHandler(postID, userID, photoPublicID);
+  // const photoPublicID = request.params.publicid;
+  // const res: any = await deletePostHandler(postID, userID, photoPublicID);
+  const res: any = await deletePostHandler(postID, userID);
   response.status(res.status).json(res.message);
 };
 
@@ -124,13 +121,13 @@ const getAllPosts = async (
 
 // CREATE COMMENT
 const comment = async (
-  request:Request,
-  response:Response,
-  next:NextFunction
+  request: Request,
+  response: Response,
+  next: NextFunction
 ) => {
-  const {comment} = request.body
+  const { comment } = request.body;
   const res: any = await createComment(comment);
   // response.status(res.status).json(res.message);
-}
+};
 
 export { PostController };

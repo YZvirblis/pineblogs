@@ -62,8 +62,9 @@ const TopBar = () => {
         </topBarStyle.ItemContatiner>
         {/*@ts-ignore*/ }
         <topBarStyle.ItemContatiner align="center">
-          <div onClick={ () => navigate("/") } className='flex row justify-around align-center items-center'>
+          <div onClick={ () => navigate("/") } style={ { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: 'Amatic SC', fontSize: "larger", cursor: "pointer" } }>
             <topBarStyle.logo src={ require("../../resources/pictures/logo.png") } />
+            <h1>{ auth.user.username }</h1>
           </div>
         </topBarStyle.ItemContatiner>
         {/*@ts-ignore*/ }
@@ -77,9 +78,9 @@ const TopBar = () => {
   }
 
   return (
-    <topBarStyle.MainContainer>
+    <>
       { !auth.user ? renderLoggedOut() : renderLoggedIn() }
-    </topBarStyle.MainContainer>
+    </>
   )
 }
 

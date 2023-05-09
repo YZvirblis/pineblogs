@@ -1,4 +1,3 @@
-import config from "config";
 import jwt from "jsonwebtoken";
 import { NextFunction } from "express";
 import { Response } from "express";

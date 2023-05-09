@@ -3,8 +3,6 @@ import bcrypt from "bcrypt";
 import IUser from "../interfaces/user.interface";
 import { ParsedQs } from "qs";
 import jwt from "jsonwebtoken";
-import config from "config";
-import { v2 as cloudinary } from "cloudinary";
 
 const getUserHandler = async (
   id?: string | ParsedQs | string[] | ParsedQs[] | undefined,
@@ -178,13 +176,6 @@ const updateUserHandler = async (paramID: string, user: IUser) => {
       }
     }
     try {
-      const fetchedUser = await User.findById(paramID);
-      if (fetchedUser && fetchedUser.profilePicture !== user.profilePicture) {
-        cloudinary.uploader.destroy(
-          `${fetchedUser.profilePicture}`,
-          function (result) {}
-        );
-      }
       await User.findByIdAndUpdate(paramID, {
         $set: user,
       });

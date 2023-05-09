@@ -20,13 +20,13 @@ function App() {
     <div className="relative">
       <TopBar />
       <Routes>
-        <Route path="/" element={ <Layout /> }>
-          {/* PUBLIC ROUTES */ }
-          <Route path="/login" element={ <Login /> } />
-          <Route path="/register" element={ <Register /> } />
-          <Route path="/" element={ <Home /> } />
-          {/* PROTECTED ROUTES */ }
-          <Route path="/" element={ <PersistLogin /> }>
+        <Route path="/" element={ <PersistLogin /> }>
+          <Route path="/" element={ <Layout /> }>
+            {/* PUBLIC ROUTES */ }
+            <Route path="/login" element={ <Login /> } />
+            <Route path="/register" element={ <Register /> } />
+            <Route path="/" element={ <Home /> } />
+            {/* PROTECTED ROUTES */ }
             <Route path="/" element={ <RequireAuth /> }>
               <Route path="/profile" element={ <Profile /> } />
               <Route path="/newpost" element={ <CreatePost /> } />

@@ -1,11 +1,12 @@
 import React, { FormEvent } from 'react'
 import { useRef, useState, useEffect } from 'react'
-import {faCheck, faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from '../api/axios';
 import { loginStyle } from '../styles';
 import { useNavigate } from 'react-router-dom';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
+import useAuth from '../hooks/useAuth';
 
 const USER_REGEX: RegExp = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -15,6 +16,7 @@ const REGISTER_URL = '/v1/users/register/'
 
 function Register() {
     const navigate = useNavigate()
+    const { auth } = useAuth()
 
     // const userRef = useRef<any>()
     const errRef = useRef<any>()
@@ -38,9 +40,11 @@ function Register() {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // useEffect(() => {
-    //     userRef.current.focus();
-    // }, [])
+    useEffect(() => {
+        if (auth.user) {
+            navigate("/")
+        }
+    }, [])
 
     // useEffect(() => {
     //     setValidName(USER_REGEX.test(user));
@@ -58,7 +62,7 @@ function Register() {
     useEffect(() => {
         setErrMsg('');
     }, [pwd, matchPwd, email])
-    
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         // if button enabled with JS hack
@@ -66,7 +70,7 @@ function Register() {
         const v2 = PWD_REGEX.test(pwd);
         const v3 = EMAIL_REGEX.test(email)
         // if (!v1 || !v2 || !v3) {
-        if ( !v2 || !v3) {
+        if (!v2 || !v3) {
             setErrMsg("Invalid Entry");
             return;
         }
@@ -101,18 +105,18 @@ function Register() {
         return uniqueNamesGenerator({
             dictionaries: [adjectives, animals, colors],
             length: randomNameLength
-          });
+        });
     }
-    
-  return (
-    <loginStyle.PageContainer className='loginBackground'>
-        {/* <loginStyle.RedirectContainer onClick={() => navigate("/login")}>
+
+    return (
+        <loginStyle.PageContainer className='loginBackground'>
+            {/* <loginStyle.RedirectContainer onClick={() => navigate("/login")}>
             <h3>Already have an account?</h3>
             <p className='text-amber-600 cursor-pointer font-bold text-xl'>Sign In</p>
         </loginStyle.RedirectContainer> */}
-        <loginStyle.MainContainer>
-            <loginStyle.TitleText>Welcome</loginStyle.TitleText>
-            {/* <loginStyle.InputContainer className='relative'>
+            <loginStyle.MainContainer>
+                <loginStyle.TitleText>Welcome</loginStyle.TitleText>
+                {/* <loginStyle.InputContainer className='relative'>
                 <div className='absolute right-5 top-4'>
                             <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
@@ -139,89 +143,89 @@ function Register() {
                             Letters, numbers, underscores, hyphens allowed.
                         </p>
             </loginStyle.InputContainer> */}
-            <loginStyle.InputContainer className='relative'>
-                <div className='absolute right-5 top-4'>
-                            <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
-                </div>
-                <loginStyle.StyledInput
-                            type="email"
-                            id="email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            required
-                            aria-invalid={validEmail ? "false" : "true"}
-                            aria-describedby="emailnote"
-                            onFocus={() => setEmailFocus(true)}
-                            onBlur={() => setEmailFocus(false)}
-                            placeholder="Email"
-                        />
-                            <p id="uidnote" className={`${emailFocus && !validEmail? "instructions" : "offscreen"} m-3 text-sm`}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Must be a valid email<br />
-                        </p>
-            </loginStyle.InputContainer>
-            <loginStyle.InputContainer className='relative'>
-                <div className='absolute right-5 top-4'>
-                            <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
-                </div>
-                <loginStyle.StyledInput
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                            aria-invalid={validPwd ? "false" : "true"}
-                            aria-describedby="pwdnote"
-                            onFocus={() => setPwdFocus(true)}
-                            onBlur={() => setPwdFocus(false)}
-                            placeholder="Password"
+                <loginStyle.InputContainer className='relative'>
+                    <div className='absolute right-5 top-4'>
+                        <FontAwesomeIcon icon={ faCheck } className={ validEmail ? "valid" : "hide" } />
+                        <FontAwesomeIcon icon={ faTimes } className={ validEmail || !email ? "hide" : "invalid" } />
+                    </div>
+                    <loginStyle.StyledInput
+                        type="email"
+                        id="email"
+                        onChange={ (e) => setEmail(e.target.value) }
+                        value={ email }
+                        required
+                        aria-invalid={ validEmail ? "false" : "true" }
+                        aria-describedby="emailnote"
+                        onFocus={ () => setEmailFocus(true) }
+                        onBlur={ () => setEmailFocus(false) }
+                        placeholder="Email"
+                    />
+                    <p id="uidnote" className={ `${emailFocus && !validEmail ? "instructions" : "offscreen"} m-3 text-sm` }>
+                        <FontAwesomeIcon icon={ faInfoCircle } />
+                        Must be a valid email<br />
+                    </p>
+                </loginStyle.InputContainer>
+                <loginStyle.InputContainer className='relative'>
+                    <div className='absolute right-5 top-4'>
+                        <FontAwesomeIcon icon={ faCheck } className={ validPwd ? "valid" : "hide" } />
+                        <FontAwesomeIcon icon={ faTimes } className={ validPwd || !pwd ? "hide" : "invalid" } />
+                    </div>
+                    <loginStyle.StyledInput
+                        type="password"
+                        id="password"
+                        onChange={ (e) => setPwd(e.target.value) }
+                        value={ pwd }
+                        required
+                        aria-invalid={ validPwd ? "false" : "true" }
+                        aria-describedby="pwdnote"
+                        onFocus={ () => setPwdFocus(true) }
+                        onBlur={ () => setPwdFocus(false) }
+                        placeholder="Password"
 
-                                />
-                            <p id="uidnote" className={`${pwdFocus && !validPwd ? "instructions" : "offscreen"} m-3 text-sm`}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Minimum eight characters, at least one letter and one number
-                        </p>
-            </loginStyle.InputContainer>
-            <loginStyle.InputContainer className='relative'>
-                <div className='absolute right-5 top-4'>
-                <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-                </div>
-                <loginStyle.StyledInput
-                                type="password"
-                                id="confirm_pwd"
-                                onChange={(e) => setMatchPwd(e.target.value)}
-                                value={matchPwd}
-                                required
-                                aria-invalid={validMatch ? "false" : "true"}
-                                aria-describedby="confirmnote"
-                                onFocus={() => setMatchFocus(true)}
-                                onBlur={() => setMatchFocus(false)}
-                                placeholder="Confirm Password"
+                    />
+                    <p id="uidnote" className={ `${pwdFocus && !validPwd ? "instructions" : "offscreen"} m-3 text-sm` }>
+                        <FontAwesomeIcon icon={ faInfoCircle } />
+                        Minimum eight characters, at least one letter and one number
+                    </p>
+                </loginStyle.InputContainer>
+                <loginStyle.InputContainer className='relative'>
+                    <div className='absolute right-5 top-4'>
+                        <FontAwesomeIcon icon={ faCheck } className={ validMatch && matchPwd ? "valid" : "hide" } />
+                        <FontAwesomeIcon icon={ faTimes } className={ validMatch || !matchPwd ? "hide" : "invalid" } />
+                    </div>
+                    <loginStyle.StyledInput
+                        type="password"
+                        id="confirm_pwd"
+                        onChange={ (e) => setMatchPwd(e.target.value) }
+                        value={ matchPwd }
+                        required
+                        aria-invalid={ validMatch ? "false" : "true" }
+                        aria-describedby="confirmnote"
+                        onFocus={ () => setMatchFocus(true) }
+                        onBlur={ () => setMatchFocus(false) }
+                        placeholder="Confirm Password"
 
-                                />
-                            <p id="confirmnote" className={`${matchFocus && !validMatch ? "instructions" : "offscreen"} m-3 text-sm`}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Must match the first password input field.
-                        </p>
-            </loginStyle.InputContainer>
-         
-                    <p ref={errRef} className="text-red-500" aria-live="assertive">{errMsg}</p>
-            <loginStyle.ButtonContainer>
-                <loginStyle.StyledButton onClick={handleSubmit} disabled={!validPwd || !validMatch ? true : false}>Register</loginStyle.StyledButton>
-            </loginStyle.ButtonContainer>
-            {/* <loginStyle.HorizontalRule/>
+                    />
+                    <p id="confirmnote" className={ `${matchFocus && !validMatch ? "instructions" : "offscreen"} m-3 text-sm` }>
+                        <FontAwesomeIcon icon={ faInfoCircle } />
+                        Must match the first password input field.
+                    </p>
+                </loginStyle.InputContainer>
+
+                <p ref={ errRef } className="text-red-500" aria-live="assertive">{ errMsg }</p>
+                <loginStyle.ButtonContainer>
+                    <loginStyle.StyledButton onClick={ handleSubmit } disabled={ !validPwd || !validMatch ? true : false }>Register</loginStyle.StyledButton>
+                </loginStyle.ButtonContainer>
+                {/* <loginStyle.HorizontalRule/>
             <loginStyle.LoginWith>Or Sign In With</loginStyle.LoginWith>
             <loginStyle.IconsContainer>
                 <SocialMediaIcon color={`${facebookBg}`}><FaFacebookF/></SocialMediaIcon>
                 <SocialMediaIcon color={`${instagramBg}`}><FaInstagram/></SocialMediaIcon>
                 <SocialMediaIcon color={`${twitterBg}`}><FaTwitter/></SocialMediaIcon>
             </loginStyle.IconsContainer>                     */}
-        </loginStyle.MainContainer>
-</loginStyle.PageContainer>
-  )
+            </loginStyle.MainContainer>
+        </loginStyle.PageContainer>
+    )
 }
 
 export default Register
